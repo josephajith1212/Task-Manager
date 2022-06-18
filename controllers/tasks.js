@@ -35,10 +35,6 @@ const getTask = async (req, res) => {
     // res.send(`get single task`)
 }
 
-const updateTask = (req, res) => {
-    res.send(`update task`)
-}
-
 const deleteTask = async (req, res) => {
     try{
         const {id: taskId} = req.params;
@@ -49,6 +45,20 @@ const deleteTask = async (req, res) => {
     }
     catch(err){
         res.status(500).send({msg: err})
+    }
+}
+
+const updateTask = async (req, res) => {
+    try {
+        const taskId = req.params.id
+        const originalTask = await Task.findOne({_id: taskId})
+        const task = await Task.findOneAndUpdate({_id: taskId}, req.body, {
+            new: true,
+            runValidators: true,
+        })
+        res.json({taskId, 'old data': originalTask, 'modified data': task})
+    } catch (error) {
+        
     }
 }
 
