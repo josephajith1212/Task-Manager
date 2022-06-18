@@ -5,15 +5,13 @@ const tasks = require('./routes/tasks');
 require('dotenv').config();
 
 //Middleware
+app.use(express.static('./public'))
 app.use(express.json());
 
 //Routes
-app.get('/hello', (req, res) => {
-    res.end(`Task Manager App`);
-})
-
 app.use('/api/v1/tasks', tasks);
 
+//establish DB connection before starting server
 const port = 3000;
 const start = async () => {
     try {

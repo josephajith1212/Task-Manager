@@ -51,14 +51,14 @@ const deleteTask = async (req, res) => {
 const updateTask = async (req, res) => {
     try {
         const taskId = req.params.id
-        const originalTask = await Task.findOne({_id: taskId})
         const task = await Task.findOneAndUpdate({_id: taskId}, req.body, {
             new: true,
             runValidators: true,
         })
-        res.json({taskId, 'old data': originalTask, 'modified data': task})
+        if (!task) return res.status(400).json({msg: `No tasks found with id = ${taskId}`})
+        res.status(200).json({task})
     } catch (error) {
-        
+        res.status(500).json({msg: error})
     }
 }
 
